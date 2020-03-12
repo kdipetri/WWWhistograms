@@ -126,37 +126,60 @@ def makePlot1D( histname, data, sigs, signal_labels, bgs, legend_labels , option
 	draw_extra_stuff(c1, opts)
 	pad_main.cd()
 
-
 	opts["legend_border"]   = False
 	opts["legend_rounded"]  = False
-	# bkg leg, some unfortunate hardcoding
-	opts["legend_ncolumns"]  = 4 #if len(bgs) >= 4 else 1
+	opts["legend_ncolumns"]  = 3 #if len(bgs) >= 4 else 1
 	opts["legend_alignment"] = "topright"
 	opts["legend_smart"]    = True
 	opts["legend_scalex"]   = 2.35
-	opts["legend_scaley"]   = 0.50
+	opts["legend_scaley"]   = 0.6
 	bkg_opt = "F"
-	legend3 = get_legend(opts)
+	legend1 = get_legend(opts)
+
+	legend1.AddEntry(bgs[0],legend_labels[0],bkg_opt) #1
+	if len(bgs) > 2: legend1.AddEntry(bgs[2],legend_labels[2],bkg_opt) #1
+	legend1.AddEntry(sigs[0],signal_labels[0]+"(x"+str(opts["signal_scale"])+")","L") #1 
+
+	#legend1.AddEntry(data,"Data","pl") #0
+	legend1.AddEntry(bgs[1],legend_labels[1],bkg_opt) #
+	if len(bgs) > 2: legend1.AddEntry(bgs[4],legend_labels[4],bkg_opt) #2 
+	legend1.AddEntry(total,"Stat. Uncert.","F") #0 
 	
-	legend3.AddEntry(sigs[0],signal_labels[0]+"(x"+str(opts["signal_scale"])+")","L") #1 
-	legend3.AddEntry(bgs[0],legend_labels[0],bkg_opt) #3
-	legend3.AddEntry(bgs[1],legend_labels[1],bkg_opt) #1
-	legend3.AddEntry(total,"Stat. Uncert.","f") #0
-	if len(bgs) > 2:
-		legend3.AddEntry(bgs[4],legend_labels[4],bkg_opt) #1
-		legend3.AddEntry(bgs[2],legend_labels[2],bkg_opt) #2
-		legend3.AddEntry(bgs[3],legend_labels[3],bkg_opt) #3
-	legend3.AddEntry(data,"","F") #0 
+	if len(bgs) > 2: legend1.AddEntry(bgs[3],legend_labels[3],bkg_opt) #2
+
+	legend1.SetTextSize(0.029)
+	legend1.Draw()
+
+	#opts["legend_border"]   = False
+	#opts["legend_rounded"]  = False
+	## bkg leg, some unfortunate hardcoding
+	#opts["legend_ncolumns"]  = 3 #if len(bgs) >= 4 else 1
+	#opts["legend_alignment"] = "topright"
+	#opts["legend_smart"]    = True
+	#opts["legend_scalex"]   = 2.35
+	#opts["legend_scaley"]   = 0.50
+	#bkg_opt = "F"
+	#legend3 = get_legend(opts)
 	#
-	#legend3.AddEntry(data,"Data","pl") #0 
-	#legend3.AddEntry(sigs[0],signal_labels[0],bkg_opt) #1 
-	#legend3.AddEntry(bgs[4],legend_labels[4],bkg_opt) #2
-	#legend3.AddEntry(bgs[3],legend_labels[3],bkg_opt) #3
+	#legend3.AddEntry(sigs[0],signal_labels[0]+"(x"+str(opts["signal_scale"])+")","L") #1 
+	#legend3.AddEntry(bgs[0],legend_labels[0],bkg_opt) #3
+	#legend3.AddEntry(bgs[1],legend_labels[1],bkg_opt) #1
 	#legend3.AddEntry(total,"Stat. Uncert.","f") #0
-	#legend3.AddEntry(bgs[0],legend_labels[0],bkg_opt) #1
-	#legend3.AddEntry(bgs[1],legend_labels[1],bkg_opt) #2
-	#legend3.AddEntry(bgs[2],legend_labels[2],bkg_opt) #3
-	legend3.Draw()
+	#if len(bgs) > 2:
+	#	legend3.AddEntry(bgs[4],legend_labels[4],bkg_opt) #1
+	#	legend3.AddEntry(bgs[2],legend_labels[2],bkg_opt) #2
+	#	legend3.AddEntry(bgs[3],legend_labels[3],bkg_opt) #3
+	#legend3.AddEntry(data,"","F") #0 
+	##
+	##legend3.AddEntry(data,"Data","pl") #0 
+	##legend3.AddEntry(sigs[0],signal_labels[0],bkg_opt) #1 
+	##legend3.AddEntry(bgs[4],legend_labels[4],bkg_opt) #2
+	##legend3.AddEntry(bgs[3],legend_labels[3],bkg_opt) #3
+	##legend3.AddEntry(total,"Stat. Uncert.","f") #0
+	##legend3.AddEntry(bgs[0],legend_labels[0],bkg_opt) #1
+	##legend3.AddEntry(bgs[1],legend_labels[1],bkg_opt) #2
+	##legend3.AddEntry(bgs[2],legend_labels[2],bkg_opt) #3
+	#legend3.Draw()
 
 	if opts["yaxis_log"] : pad_main.SetLogy(opts["yaxis_log"] )
 	        

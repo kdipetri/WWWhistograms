@@ -137,57 +137,30 @@ def makePlot1Dratio( histname, data, sigs, signal_labels, bgs, legend_labels , o
 	pad_main.cd()
 
 	# legend, some unfortunate hardcoding
-	opts["legend_ncolumns"]  = 1 #if len(bgs) >= 4 else 1
-	opts["legend_alignment"] = "topleft"
-	opts["legend_smart"]    = True
-	opts["legend_scalex"]   = 0.5
-	opts["legend_scaley"]   = 0.9
 	opts["legend_border"]   = False
 	opts["legend_rounded"]  = False
-	#legend = get_legend(opts)
-	#sig_opt = "F"
-	#legend.AddEntry(sigs[0],signal_labels[0],sig_opt) #1
-	#legend.AddEntry(sigs[1],signal_labels[1],sig_opt) #2
-	#legend.AddEntry(sigs[2],signal_labels[2],sig_opt) #3
-	#legend.AddEntry(sigs[3],signal_labels[3],sig_opt) #4
-	#legend.Draw()
-
-	# data leg
-	#opts["legend_ncolumns"]  = 1 #if len(bgs) >= 4 else 1
-	#opts["legend_alignment"] = "topleft"
-	#opts["legend_smart"]    = True
-	#opts["legend_scalex"]   = 0.8
-	#opts["legend_scaley"]   = 0.45
-	#legend2 = get_legend(opts)
-	#legend2.Draw()
-
-	# bkg leg, some unfortunate hardcoding
-	opts["legend_ncolumns"]  = 4 #if len(bgs) >= 4 else 1
+	opts["legend_ncolumns"]  = 3 #if len(bgs) >= 4 else 1
 	opts["legend_alignment"] = "topright"
 	opts["legend_smart"]    = True
-	opts["legend_scalex"]   = 2.5
-	opts["legend_scaley"]   = 0.6
+	opts["legend_scalex"]   = 2.51
+	opts["legend_scaley"]   = 0.86
 	bkg_opt = "F"
-	legend3 = get_legend(opts)
-	legend3.AddEntry(data,"Data","pl") #0 
-	legend3.AddEntry(sigs[0],signal_labels[0],bkg_opt) #1 
-	legend3.AddEntry(bgs[0],legend_labels[0],bkg_opt) #3
-	legend3.AddEntry(bgs[1],legend_labels[1],bkg_opt) #1
-	legend3.AddEntry(total,"Stat. Uncert.","f") #0
-	if len(bgs) > 2:
-		legend3.AddEntry(bgs[4],legend_labels[4],bkg_opt) #1
-		legend3.AddEntry(bgs[2],legend_labels[2],bkg_opt) #2
-		legend3.AddEntry(bgs[3],legend_labels[3],bkg_opt) #3
-	#
-	#legend3.AddEntry(data,"Data","pl") #0 
-	#legend3.AddEntry(sigs[0],signal_labels[0],bkg_opt) #1 
-	#legend3.AddEntry(bgs[4],legend_labels[4],bkg_opt) #2
-	#legend3.AddEntry(bgs[3],legend_labels[3],bkg_opt) #3
-	#legend3.AddEntry(total,"Stat. Uncert.","f") #0
-	#legend3.AddEntry(bgs[0],legend_labels[0],bkg_opt) #1
-	#legend3.AddEntry(bgs[1],legend_labels[1],bkg_opt) #2
-	#legend3.AddEntry(bgs[2],legend_labels[2],bkg_opt) #3
-	legend3.Draw()
+	legend1 = get_legend(opts)
+
+	legend1.AddEntry(sigs[0],signal_labels[0],"F") #0
+	legend1.AddEntry(bgs[0],legend_labels[0],bkg_opt) #1
+	if len(bgs) > 2: legend1.AddEntry(bgs[2],legend_labels[2],bkg_opt) #1
+
+	legend1.AddEntry(data,"Data","pl") #0
+	legend1.AddEntry(bgs[1],legend_labels[1],bkg_opt) #
+	if len(bgs) > 2: legend1.AddEntry(bgs[4],legend_labels[4],bkg_opt) #2 
+	
+	legend1.AddEntry(total,"Stat. Uncert.","F") #0 
+	if len(bgs) > 2: legend1.AddEntry(bgs[3],legend_labels[3],bkg_opt) #2
+
+	legend1.SetTextSize(0.037)
+	legend1.Draw()
+
 
 	if opts["yaxis_log"] : pad_main.SetLogy(opts["yaxis_log"] )
 	        

@@ -10,8 +10,8 @@ setStyle()
 def makePlotMultipleSRs(srs, selname, name , dirname, extraoptions={}):
 
 
-	input_dir = "/nfs-7/userdata/phchang/vvvauxplots/WWWhists/combineyearsLoose_v5.3.3/2020_03_09_1500/"
-	#input_dir = "hists/combineyearsLoose_v5.3.3/2020_03_09_1500/"
+	#input_dir = "/nfs-7/userdata/phchang/vvvauxplots/WWWhists/combineyearsLoose_v5.3.3/2020_03_09_1500/"
+	input_dir = "hists/combineyearsLoose_v5.3.3/2020_03_09_1500/"
 	
 	data_fname = "{}/data.root".format(input_dir)
 	
@@ -42,10 +42,10 @@ def makePlotMultipleSRs(srs, selname, name , dirname, extraoptions={}):
 
 	legend_labels = [
 		"Lost/three leptons",
-		"Nonprompt lepton",
+		"Nonprompt leptons",
 		"Irreducible",
-		"Charge misassignment",
-		"#gamma#rightarrowleptons",
+		"Charge missasignment",
+		"#gamma#rightarrowlepton",
 		]
 	#signal_labels = [
 	#	"WWW",
@@ -70,6 +70,7 @@ def makePlotMultipleSRs(srs, selname, name , dirname, extraoptions={}):
 	if "CRBTag0SFOS"  in selname: txt = "0SFOS b-tag control region"
 	if "CRBTagSS"     in selname: txt = "SS n_{j}=2 b-tag control region"
 	if "CRBTagSS1J"   in selname: txt = "SS n_{j}=1 b-tag control region"
+	if "CRBTagSS1JPreBDT" in selname : txt = "SS n_{j}=1 BDT b-tag control region"
 
 	if "SR2SFOSPreSel" in selname : txt = "2SFOS preselection"
 	if "SR1SFOSPreSel" in selname : txt = "1SFOS preselection"
@@ -83,6 +84,10 @@ def makePlotMultipleSRs(srs, selname, name , dirname, extraoptions={}):
 	if "SRSSPreSelBDT" in selname : txt = "SS n_{j}=2 BDT preselection"
 
 	if "Cut3LPreSel" in selname : txt = "3L preselection"
+
+	if "AR0SFOSBDT" in selname : txt = "0SFOS fake application region"
+	if "ARSS1JBDT" in selname : txt = "SS n_{j}=1 BDT fake application region"
+	if "ARSS2JPreSelBDT" in selname : txt = "SS n_{j}=2 BDT fake application region"
 
 	histname = "{}__{}".format(selname,name)
 	options = {
@@ -339,13 +344,17 @@ def makeWZCRSSplots(dirname):
 	}
 	makePlotMultipleSRs(srs, sel, "MllOnOff" , dirname, options)
 
+	srs = ["WZCRSSeePreSelBDT","WZCRSSemPreSelBDT","WZCRSSmmPreSelBDT"]
+	sel = "WZCRSSPreSelBDT"
+	scale = 20
 	options = {
 	 "signal_scale" : scale,
 	 "yaxis_label": "Events",
 	 "xaxis_label": "prompt BDT score",
-	 "nbins": 40,
+	 "nbins": 20,
+	 "yaxis_range": [0,80],
 	}
-	makePlotMultipleSRs(srs,sel,"BDT_lostlep_prompt_SFOS", dirname, options)
+	makePlotMultipleSRs(srs,sel,"BDT_lostlep_prompt_SS2J", dirname, options)
 
 
 	return 
@@ -354,40 +363,13 @@ def makeFakeCRplots(dirname):
 	#
 	# 3l - preselelctin
 	#
-	srs = ["CRBTageePreSel","CRBTagmmPreSel","CRBTagmmPreSel"]
-	sel = "CRBTagPreSel"
 
-	srs = ["CRBTag0SFOS"]
-	sel = "CRBTag0SFOS"
-
-	scale = 5
-	# trying tighter
-	#srs = ["CRBTageeKinSel","CRBTagmmKinSel","CRBTagmmKinSel"]
-	#sel = "CRBTagKinSel"
-
-	# lead lep pT 
-	options = {
-	 "signal_scale" : scale,
-	 "yaxis_label": "Events",
-	# "yaxis_range": [0,50],
-	 "xaxis_label": "Leading lepton p_{T} [GeV]",
-	 "nbins": 10,
-	}
-	makePlotMultipleSRs(srs, sel, "lep_pt0" , dirname, options)
-
-	# MT
-	options = {
-	 "signal_scale" : scale,
-	 "yaxis_label": "Events",
-	 "yaxis_range": [0,35],
-	 "xaxis_label": "m_{T}^{max} [GeV]",
-	 "nbins": 10,
-	}
-	makePlotMultipleSRs(srs, sel, "MTmax" , dirname, options)
 
 	# SS 1J 
-	srs = ["CRBTag1Jee1JPre", "CRBTag1Jem1JPre", "CRBTag1Jmm1JPre"]
-	sel = "CRBTagSS1JPreSel"
+	srs = ["ARSS1JeeBDT", "ARSS1JemBDT", "ARSS1JmmBDT"]
+	sel = "ARSS1JBDT"
+	scale = 30
+
 	# min dR j
 	options = {
 	 "signal_scale" : scale,
@@ -410,11 +392,32 @@ def makeFakeCRplots(dirname):
 	}
 	makePlotMultipleSRs(srs, sel, "DRljmin" , dirname, options)
 
+	options = {
+	 "signal_scale" : scale,
+	 "yaxis_label": "Events",
+	 "xaxis_label": "#gamma-fake BDT score",
+	 "nbins": 20,
+	}
+	makePlotMultipleSRs(srs,sel,"BDT_photon_fakes_SS1J_noBtag", dirname, options)
+
 	# SS 1J 
 	#srs = ["CRBTagee", "CRBTagem", "CRBTagmm"]
-	srs = ["CRBTageePreSelBDT", "CRBTagemPreSelBDT", "CRBTagmmPreSelBDT"]
-	sel = "CRBTagSS2JPreSel"
-	
+	#srs = ["CRBTageePreSelBDT", "CRBTagemPreSelBDT", "CRBTagmmPreSelBDT"]
+	#sel = "CRBTagSS2JPreSel"
+	srs = ["ARSSeePreSelBDT", "ARSSemPreSelBDT", "ARSSmmPreSelBDT"]
+	sel = "ARSS2JPreSelBDT"
+	scale = 40
+	options = {
+	 "signal_scale" : scale,
+	 "yaxis_label": "Events",
+	 "xaxis_label": "#gamma-fake BDT score",
+	 "nbins": 10,
+	}
+	makePlotMultipleSRs(srs,sel,"BDT_photon_fakes_SS2J_noBtag", dirname, options)
+
+	srs = ["AR0SFOSBDT"]
+	sel = "AR0SFOSBDT"
+	scale = 10
 
 	options = {
 	 "signal_scale" : scale,
@@ -423,6 +426,19 @@ def makeFakeCRplots(dirname):
 	 "nbins": 20,
 	}
 	makePlotMultipleSRs(srs,sel,"BDT_photon_fakes_SFOS_noBtag", dirname, options)
+
+	srs = ["AR1SFOSBDT"]
+	sel = "AR1SFOSBDT"
+	scale = 50
+
+	options = {
+	 "signal_scale" : scale,
+	 "yaxis_label": "Events",
+	 "xaxis_label": "#gamma-fake BDT score",
+	 "nbins": 20,
+	}
+	makePlotMultipleSRs(srs,sel,"BDT_photon_fakes_SFOS_noBtag", dirname, options)
+
 
 	return 
 
@@ -542,7 +558,7 @@ def makeBDTPlots():
 
 	return
 
-def makeplotSFOS():
+def makeSFOSplots(dirname):
 	srs = ["SR0SFOSPreSel","SR1SFOSPreSel","SR2SFOSPreSel"]
 	sel = "Cut3LPreSel"
 	scale = 100
@@ -642,13 +658,13 @@ dirname = "plots"
 #makeSSinclusive(dirname)
 #makeSS2Jplots(dirname)
 #makeSS1Jplots(dirname)
-make0SFOSplots(dirname)
-makeplotSFOS(dirname)
+#make0SFOSplots(dirname)
+#makeSFOSplots(dirname)
 
 #makeBDTPlots()
 
 #makeWZCRSSplots(dirname)
-#makeFakeCRplots(dirname)
+makeFakeCRplots(dirname)
 
 # BDT options
 #  KEY: TH1F	SRSSmm__BDT_lostlep_prompt_SFOS;1	

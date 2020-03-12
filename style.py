@@ -174,7 +174,7 @@ class OptionsCompare(object):
             "extra_text": { "type": "List", "desc": "list of strings for textboxes", "default": [], "kinds": [ "1dratio","graph"], },
             "extra_text_size": { "type": "Float", "desc": "size for extra text", "default": 0.03, "kinds": [ "1dratio","graph"], },
             "extra_text_xpos": { "type": "Float", "desc": "NDC x position (0 to 1) for extra text", "default": 0.235, "kinds": [ "1dratio","graph"], },
-            "extra_text_ypos": { "type": "Float", "desc": "NDC y position (0 to 1) for extra text", "default": 0.74, "kinds": [ "1dratio","graph"], },
+            "extra_text_ypos": { "type": "Float", "desc": "NDC y position (0 to 1) for extra text", "default": 0.73, "kinds": [ "1dratio","graph"], },
 
             "extra_lines": { "type": "List", "desc": "list of upto 7-tuples (x1,y1,x2,y2,style,width,color) for lines", "default": [], "kinds": [ "1dratio","graph"], },
 
@@ -424,7 +424,7 @@ class Options(object):
             "extra_text": { "type": "List", "desc": "list of strings for textboxes", "default": [], "kinds": [ "1dratio","graph"], },
             "extra_text_size": { "type": "Float", "desc": "size for extra text", "default": 0.03, "kinds": [ "1dratio","graph"], },
             "extra_text_xpos": { "type": "Float", "desc": "NDC x position (0 to 1) for extra text", "default": 0.19, "kinds": [ "1dratio","graph"], },
-            "extra_text_ypos": { "type": "Float", "desc": "NDC y position (0 to 1) for extra text", "default": 0.79, "kinds": [ "1dratio","graph"], },
+            "extra_text_ypos": { "type": "Float", "desc": "NDC y position (0 to 1) for extra text", "default": 0.76, "kinds": [ "1dratio","graph"], },
 
             "extra_lines": { "type": "List", "desc": "list of upto 7-tuples (x1,y1,x2,y2,style,width,color) for lines", "default": [], "kinds": [ "1dratio","graph"], },
 
@@ -589,6 +589,9 @@ def get_legend(opts):
         legend.SetBorderSize(1)
     else:
         legend.SetBorderSize(0)
+
+
+    if opts["extra_text_size"] : legend.SetTextSize(opts["extra_text_size"])
     legend.SetTextFont(42)
     legend.SetNColumns(opts["legend_ncolumns"])
     if opts["legend_column_separation"]: legend.SetColumnSeparation(opts["legend_column_separation"])
@@ -743,7 +746,7 @@ def getHisto(fname,histname):
 	froot = ROOT.TFile.Open(fname)
 	hist = froot.Get(histname)	
 	if "photon"  in fname : 
-		print("Doing photon")
+		#print("Doing photon")
 		froot2016 = ROOT.TFile.Open("Loose2016_v5.3.3/2020_03_09_1500/photon.root")	
 		froot2017 = ROOT.TFile.Open("Loose2016_v5.3.3/2020_03_09_1500/photon.root")	
 		froot2018 = ROOT.TFile.Open("Loose2016_v5.3.3/2020_03_09_1500/photon.root")	
