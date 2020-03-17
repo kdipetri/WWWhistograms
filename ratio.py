@@ -56,15 +56,16 @@ def makePlot1Dratio( histname, data, sigs, signal_labels, bgs, legend_labels , o
 	#for ibg,bg in enumerate(bgs):
 	for ibg,bg in reversed(list(enumerate(bgs))):
 		#print (bg.GetName())
-		background_style(bg,opts)
+		bg = background_style(bg,opts)
 		total.Add(bg)
 		stack.Add(bg)
+		print(bg.GetName(),bg.GetNbinsX())
 		
 		#legend.AddEntry(bg, legend_labels[ibg], "F")
 
 	for isig,sig in reversed(list(enumerate(sigs))):
 		if opts["stack_sig"]:
-			signal_style(sig,opts)
+			sig = signal_style(sig,opts)
 			total.Add(sig)
 			stack.Add(sig)
 			
@@ -127,7 +128,7 @@ def makePlot1Dratio( histname, data, sigs, signal_labels, bgs, legend_labels , o
 	#
 	# data 
 	#
-	data_style(data,opts)
+	data = data_style(data,opts)
 	#legend.AddEntry(data,"Data","LPE")
 	data.Draw("same pe X0")
 
@@ -147,16 +148,16 @@ def makePlot1Dratio( histname, data, sigs, signal_labels, bgs, legend_labels , o
 	bkg_opt = "F"
 	legend1 = get_legend(opts)
 
-	legend1.AddEntry(sigs[0],signal_labels[0],"F") #0
-	legend1.AddEntry(bgs[0],legend_labels[0],bkg_opt) #1
-	if len(bgs) > 2: legend1.AddEntry(bgs[2],legend_labels[2],bkg_opt) #1
+	legend1.AddEntry(signal_style(sigs[0],opts),signal_labels[0],"F") #0
+	legend1.AddEntry(background_style(bgs[0],opts),legend_labels[0],bkg_opt) #1
+	if len(bgs) > 2: legend1.AddEntry(background_style(bgs[2],opts),legend_labels[2],bkg_opt) #1
 
-	legend1.AddEntry(data,"Data","pl") #0
-	legend1.AddEntry(bgs[1],legend_labels[1],bkg_opt) #
-	if len(bgs) > 2: legend1.AddEntry(bgs[4],legend_labels[4],bkg_opt) #2 
+	legend1.AddEntry(data_style(data,opts),"Data","pl") #0
+	legend1.AddEntry(background_style(bgs[1],opts),legend_labels[1],bkg_opt) #
+	if len(bgs) > 2: legend1.AddEntry(background_style(bgs[4],opts),legend_labels[4],bkg_opt) #2 
 	
 	legend1.AddEntry(total,"Stat. Uncert.","F") #0 
-	if len(bgs) > 2: legend1.AddEntry(bgs[3],legend_labels[3],bkg_opt) #2
+	if len(bgs) > 2: legend1.AddEntry(background_style(bgs[3],opts),legend_labels[3],bkg_opt) #2
 
 	legend1.SetTextSize(0.037)
 	legend1.Draw()

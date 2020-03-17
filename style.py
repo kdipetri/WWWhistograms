@@ -174,7 +174,7 @@ class OptionsCompare(object):
             "extra_text": { "type": "List", "desc": "list of strings for textboxes", "default": [], "kinds": [ "1dratio","graph"], },
             "extra_text_size": { "type": "Float", "desc": "size for extra text", "default": 0.03, "kinds": [ "1dratio","graph"], },
             "extra_text_xpos": { "type": "Float", "desc": "NDC x position (0 to 1) for extra text", "default": 0.235, "kinds": [ "1dratio","graph"], },
-            "extra_text_ypos": { "type": "Float", "desc": "NDC y position (0 to 1) for extra text", "default": 0.73, "kinds": [ "1dratio","graph"], },
+            "extra_text_ypos": { "type": "Float", "desc": "NDC y position (0 to 1) for extra text", "default": 0.72, "kinds": [ "1dratio","graph"], },
 
             "extra_lines": { "type": "List", "desc": "list of upto 7-tuples (x1,y1,x2,y2,style,width,color) for lines", "default": [], "kinds": [ "1dratio","graph"], },
 
@@ -364,7 +364,7 @@ class Options(object):
             "yaxis_range": { "type": "List", "desc": "2 elements to specify y axis range", "default": [], "kinds": ["1dratio","graph","2d"], },
             "zaxis_range": { "type": "List", "desc": "2 elements to specify z axis range", "default": [], "kinds": ["2d"], },
 
-            "xaxis_bins":{"type":"List","desc":"List containing bin labels instead of text","default":[],"kinds":["1dratio","graph","2dratio"]},
+            "xaxis_bins":{"type":"List","desc":"List containing bins instead of text","default":[],"kinds":["1dratio","graph","2dratio"]},
             "xaxis_bin_text_labels":{"type":"List","desc":"List containing bin labels instead of text","default":[],"kinds":["1dratio","graph","2dratio"]},
 
             # Ratio
@@ -653,20 +653,21 @@ def save(c1, opts):
             #orig_fname = fname.replace(".pdf","_orig.pdf")
             os.system("mv {} {}".format(fname, orig_fname))
 
-    print(">>> Saving {}".format(fname))
-    c1.SaveAs(fname)
+    #print(">>> Saving {}".format(fname))
+    c1.SaveAs(fname+".png")
+    c1.SaveAs(fname+".pdf")
 
-    if opts["output_diff_previous"]:
-        fname_diff = "diff.png"
-        utils.diff_images(orig_fname,fname, output=fname_diff)
-        os.system("ic {}".format(fname_diff))
-        if orig_fname:
-            os.system("rm {}".format(orig_fname))
-
-    if opts["output_ic"]:
-        os.system("ic {}".format(fname))
-    if opts["output_jsroot"]:
-        r.TBufferJSON.ExportToFile("{}.json".format(fname.rsplit(".",1)[0]),c1)
+    #if opts["output_diff_previous"]:
+    #    fname_diff = "diff.png"
+    #    utils.diff_images(orig_fname,fname, output=fname_diff)
+    #    os.system("ic {}".format(fname_diff))
+    #    if orig_fname:
+    #        os.system("rm {}".format(orig_fname))
+	#
+    #if opts["output_ic"]:
+    #    os.system("ic {}".format(fname))
+    #if opts["output_jsroot"]:
+    #    r.TBufferJSON.ExportToFile("{}.json".format(fname.rsplit(".",1)[0]),c1)
 
     return
 
@@ -819,6 +820,12 @@ def background_style(hist,opts):
 	name = hist.GetName()
 	col = ROOT.kBlack
 
+	if "ARSSmmPreSelBDT__BDT_photon_fakes_SS2J_noBtag_fakes"==name: 
+		#remove large weight
+		hist.SetBinContent(103,3)
+		hist.SetBinError(103,0.5)
+		#hist.Fill(0.50, -80) 
+
 	if "BDT_lostlep_prompt_SS2J" in name: name = name.replace("BDT_lostlep_prompt_SS2J","")
 	if "BDT_lostlep_prompt_SS1J" in name: name = name.replace("BDT_lostlep_prompt_SS1J","")
 	if "BDT_lostlep_prompt_SFOS" in name: name = name.replace("BDT_lostlep_prompt_SFOS","")
@@ -844,8 +851,10 @@ def background_style(hist,opts):
 		#print("REBIN {}".format(rebin_fact))
 		hist.Rebin(rebin_fact)
 	if opts["xaxis_bins"]:
+		print(array("d",opts["xaxis_bins"]))
 		nbins = len(opts["xaxis_bins"])-1
 		hist =hist.Rebin( nbins,hist.GetName()+"_", array("d",opts["xaxis_bins"]) )
+		if "photon"    in name : hist.Smooth()
 	if opts["xaxis_bin_text_labels"]:
 		for i in range(len( opts["xaxis_bin_text_labels"])):
 			hist.GetXaxis().SetBinLabel(i+1,opts["xaxis_bin_text_labels"][i])
@@ -899,8 +908,9 @@ def signal_style(hist,opts):
 		rebin_fact = int(bins_now/(opts["nbins"]))
 		hist.Rebin(rebin_fact)
 	if opts["xaxis_bins"]:
+		#print(array("d",opts["xaxis_bins"]))
 		nbins = len(opts["xaxis_bins"])-1
-		hist =hist.Rebin( nbins,hist.GetName()+"_", array("d",opts["xaxis_bins"]) )
+		hist = hist.Rebin( nbins,hist.GetName()+"_", array("d",opts["xaxis_bins"]) )
 	if opts["xaxis_bin_text_labels"]:
 		for i in range(len( opts["xaxis_bin_text_labels"])):
 			hist.GetXaxis().SetBinLabel(i+1,opts["xaxis_bin_text_labels"][i])

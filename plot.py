@@ -91,7 +91,7 @@ def makePlotMultipleSRs(srs, selname, name , dirname, extraoptions={}):
 
 	histname = "{}__{}".format(selname,name)
 	options = {
-		"output_name": dirname + "/" + histname + "_ratio.png",
+		"output_name": dirname + "/" + histname + "_ratio",
 		"do_ratio": True,
 		"stack_sig": True,
 		"extra_text": txt,
@@ -104,7 +104,7 @@ def makePlotMultipleSRs(srs, selname, name , dirname, extraoptions={}):
 	makePlot1Dratio( histname, data, sigs, signal_labels, bgs, legend_labels, options )
 
 	options = {
-		"output_name": dirname + "/" + histname + "_compare.png",
+		"output_name": dirname + "/" + histname + "_compare",
 		"do_ratio": False,
 		"stack_sig": False,
 		"extra_text": txt,
@@ -141,16 +141,19 @@ def makeSS2Jplots(dirname):
 	 "signal_scale" : scale,
 	 "yaxis_label": "Events",
 	 "xaxis_label": "m_{T}^{max} [GeV]",
-	 "nbins": 15,
+	 "xaxis_bins": [0,20,40,60,80,110,140,180,220,260,300]
+	 #"xaxis_bins": [0,20,50,80,110,140,160,180,220,260,300]
+	 #"nbins": 15,
 	}
 	makePlotMultipleSRs(srs, sel, "MTmax" , dirname, options)
 
 	# DetajjL
 	options = {
-	 "signal_scale" : scale,
+	 "signal_scale" : 10,
 	 "yaxis_label": "Events",
 	 "xaxis_label": "#Delta#eta(j,j)",
 	 "nbins": 20,
+	 "yaxis_range": [0,200]
 	}
 	makePlotMultipleSRs(srs, sel, "DetajjL" , dirname, options)
 
@@ -161,7 +164,9 @@ def makeSS2Jplots(dirname):
 	 "signal_scale": 5,
 	 "yaxis_label": "Events",
 	 "xaxis_label": "m_{jj} [GeV]",
-	 "nbins": 10,
+	 "xaxis_bins": [0,20,50,80,120,160,200,250,300], #safe
+	 "yaxis_range": [0,120],
+	 #"nbins": 10,
 	 #"xaxis_range": [0,500]
 	}
 	makePlotMultipleSRs(srs, sel, "Mjj" , dirname, options)
@@ -477,6 +482,7 @@ def makeSSinclusive(dirname):
 	}
 	makePlotMultipleSRs(srs, sel, "Ptll" , dirname, options)
 
+	scale = 20
 	# min mlj
 	options = {
 	 "signal_scale" : scale,
@@ -604,8 +610,8 @@ def makeSFOSplots(dirname):
 	 "signal_scale" : scale,
 	 "yaxis_label": "Events",
 	 "xaxis_label":"M_{T}^{3rd}",
-	 "xaxis_range":[0,250],
-	 "nbins": 35,
+	 "yaxis_range":[0,150],
+	 "nbins": 30,
 	 #"yaxis_log": True,
 	}
 	makePlotMultipleSRs(srs,sel,"MT3rd", dirname, options)

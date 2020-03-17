@@ -41,7 +41,7 @@ def makePlot1D( histname, data, sigs, signal_labels, bgs, legend_labels , option
 	#for ibg,bg in enumerate(bgs):
 	for ibg,bg in reversed(list(enumerate(bgs))):
 		#print (bg.GetName())
-		background_style(bg,opts)
+		bg = background_style(bg,opts)
 		total.Add(bg)
 		stack.Add(bg)
 		
@@ -49,7 +49,7 @@ def makePlot1D( histname, data, sigs, signal_labels, bgs, legend_labels , option
 
 	if opts["stack_sig"]:
 		for isig,sig in reversed(list(enumerate(sigs))):
-			signal_style(sig,opts)
+			sig = signal_style(sig,opts)
 			total.Add(sig)
 			stack.Add(sig)
 			
@@ -110,7 +110,7 @@ def makePlot1D( histname, data, sigs, signal_labels, bgs, legend_labels , option
 	# 
 	if not opts["stack_sig"]:
 		for isig,sig in enumerate(sigs): 
-			signal_style(sig,opts)
+			sig = signal_style(sig,opts)
 			sig.Draw("samehist")
 
 	#
