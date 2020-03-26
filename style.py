@@ -820,10 +820,23 @@ def background_style(hist,opts):
 	name = hist.GetName()
 	col = ROOT.kBlack
 
-	if "ARSSmmPreSelBDT__BDT_photon_fakes_SS2J_noBtag_fakes"==name: 
-		#remove large weight
-		hist.SetBinContent(103,3)
-		hist.SetBinError(103,0.5)
+	if "ARSS2JPreSelBDT__BDT_photon_fakes_SS2J_noBtag_fakes"==name: 
+		#remove events with very large weight
+		hist.SetBinContent(103,6)
+		hist.SetBinError(103,1.0)
+		hist.SetBinContent(158,25)
+		hist.SetBinError(158,5.0)
+		hist.SetBinContent(159,26)
+		hist.SetBinContent(159,5.0)
+		hist.SetBinContent(160,29)
+		hist.SetBinError(160,5.0)
+		#hist.SetBinContent(175,21.0)
+		#hist.SetBinError(175,5.0)
+		#hist.Fill(0.50, -80) 
+	if "ARSS2JPreSelBDT__BDT_photon_fakes_SS2J_noBtag_prompt"==name: 
+		#remove one event with very large weight
+		hist.SetBinContent(141,6)
+		hist.SetBinError(103,4.0)
 		#hist.Fill(0.50, -80) 
 
 	if "BDT_lostlep_prompt_SS2J" in name: name = name.replace("BDT_lostlep_prompt_SS2J","")
